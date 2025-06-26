@@ -70,6 +70,8 @@ def parse_org_purchases(
         currency_code, end_time_in_ms
     )
     closing_share_price = share_data_utils.get_closing_price(ticker, end_time_in_ms)
+    print( f"{closing_share_price}, {type(closing_share_price)}" )
+    print( f"{closing_rbi_rate}, {type(closing_rbi_rate)}" )
     closing_inr_price = closing_share_price * closing_rbi_rate
     print(
         f"{ticker}: Closing price(INR) = {closing_inr_price}, closing_share_price({ticker_currency_info[ticker]}) = {closing_share_price} closing_rbi_rate(INR) = {closing_rbi_rate}"

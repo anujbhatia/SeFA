@@ -73,11 +73,23 @@ def __init_map(ticker: str) -> t.List[TimedFmv]:
         df = pd.read_csv(historic_share_path)
 
         for _, data in df.iterrows():
-            entry_time_in_ms = date_utils.parse_yyyy_mm_dd(data["Date"])[
-                "time_in_millis"
-            ]
+            if("-" in data["Date"]):
+                entry_time_in_ms = date_utils.parse_yyyy_mm_dd(data["Date"])[
+                    "time_in_millis"
+                ]
+            else:
+                entry_time_in_ms = date_utils.parse_mm_dd(data["Date"])[
+                    "time_in_millis"
+                ]
+            if(isinstance(data["Close"],str)):
+                if(data["Close"][0]=="$"):    
+                    fmv=float(data["Close"][1:])
+                else:
+                    fmv=float(data["Close"])
+            else:
+                fmv = data["Close"]
             ticker_price_map.append(
-                {"entry_time_in_millis": entry_time_in_ms, "fmv": data["Close"]}
+                {"entry_time_in_millis": entry_time_in_ms, "fmv": fmv}
             )
 
         price_map_cache[ticker] = ticker_price_map
